@@ -168,6 +168,28 @@ In ```{"val1": "(number)", "val2": "(number)", "operation": "(string)"}``` you c
 
 This would match ```{"val1": 10, "val2": 20, "operation": "+"}```.
 
+We can describe JSON objects in which the keys and values are not known, but their types are.
+
+    Feature: Number store
+
+      Scenari: Store numeric variables
+        When POST /variables
+        And request-body (string: number)
+        Then status 200
+
+The request body may be any json object where the keys are strings and the values numbers, such as `{"dogs": 2, "cats", 3}`.
+
+But consider this:
+    Feature: Product quantities
+
+      Scenari: Store numeric variables
+        When POST /quantities
+        And request-body (number: number)
+        Then status 200
+
+The key is the product id, which is a number. This would match `{"10", 100}` where product id is 10. Note that the key is a number within a string.
+
+
 ### Defining Types
 
 Sometimes the data structure is too complex to view in place. It helps to be able to pull it out, so that the semantics of the request are not obscured.
